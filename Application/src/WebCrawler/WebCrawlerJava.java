@@ -25,7 +25,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class WebCrawlerJava {
-	public static void main(String[] args) throws NamingException {
+	public static void main(String[] args) throws NamingException, IOException {
 		
 			org.jsoup.nodes.Document doc;
 			Elements newRef;
@@ -34,7 +34,7 @@ public class WebCrawlerJava {
 			Sender sender;
 			try {
 				sender=new Sender();
-				sender.sendToTopic();
+				sender.send("oláa");
 			} catch (NamingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
