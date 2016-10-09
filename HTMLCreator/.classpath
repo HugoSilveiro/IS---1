@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/gonca/Documents/IS/IS---1/HTMLCreator/jboss-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hugo Silveiro/Documents/University/Software Engeneering/IS/WebCrawler/jsoup-1.9.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hugo Silveiro/Documents/wildfly-10.1.0.Final/bin/client/jboss-client.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

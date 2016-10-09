@@ -1,36 +1,39 @@
 package WebCrawler;
 
-
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
+import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
-import javax.jms.JMSProducer;
 import javax.jms.JMSRuntimeException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 
-public class Sender {
+public class Receiver {
  private ConnectionFactory cf;
  private Destination d;
 
- public Sender() throws NamingException {
+ public Receiver() throws NamingException {
   this.cf = InitialContext.doLookup("jms/RemoteConnectionFactory");
   this.d = InitialContext.doLookup("jms/topic/PC");
  }
-
- private void send(String text) {
-  try (JMSContext jcontext = cf.createContext("teste", "teste");) {
-   JMSProducer mp = jcontext.createProducer();
-   mp.send(d, text);
+ 
+ private String receive() {
+  String msg = null;
+  try (JMSContext jcontex = cf.createContext("teste", "teste");) {
+   JMSConsumer mc = jcontex.createConsumer(d);
+   msg = mc.receiveBody(String.class);
   } catch (JMSRuntimeException re) {
    re.printStackTrace();
   }
+  return msg;
  }
 
  public static void main(String[] args) throws NamingException {
-  Sender s = new Sender();
-  s.send("Hello Receiver!");
- }
-}
+  Receiver r = new Receiver();
 
+  String msg = r.receive();
+  System.out.println("Message: " + msg);
+ }
+
+}
