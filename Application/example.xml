@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<countrycolection>
+   <country>
+      <nation>Portugal</nation>
+      <shortname>POR</shortname>
+      <golds>0</golds>
+      <silvers>0</silvers>
+      <coppers>1</coppers>
+      <medalcolection>
+       <medal>
+          <categorie>Na água</categorie>
+          <sport>Natação</sport>
+          <medal>Cobre</medal>
+          <winner>Mendes</winner>
+       </medal>
+      </medalcolection>
+   </country>
+   <country>
+      <nation>Espanha</nation>
+      <shortname>ESP</shortname>
+      <golds>1</golds>
+      <silvers>1</silvers>
+      <coppers>0</coppers>
+      <medalcolection>
+           <medal>
+              <categorie>Sempre</categorie>
+              <sport>Bicicleta</sport>
+              <medal>Ouro</medal>
+              <winner>Rogério</winner>
+           </medal>
+           <medal>
+              <categorie>Com os pés</categorie>
+              <sport>Corrida</sport>
+              <medal>Prata</medal>
+              <winner>José</winner>
+           </medal>
+      </medalcolection>
+   </country>
+</countrycolection>
