@@ -9,15 +9,27 @@ import org.xml.sax.SAXException;
 
 import MedalKeeper.Receiver;
 
+
+
+/*
+
+@Entity
+@NamedQueries({
+	@NamedQuery(name="countryMedals", query="select m from Country p"),
+	@NamedQuery(name="sportMedals", query="select m from Sports s"),
+	@NamedQuery(name="athleteMedals", query="select m from Country p")
+}
+*/
 public class Requester {
 	public static void main(String[] args) {
-		
+		//Create temporary queue
+		//Send the request to the temporary queue
 		
 	    while(true){
 	    	display();
 	    	Scanner sc = new Scanner(System.in);
 		    int userOption = sc.nextInt();
-		    
+		    	
 	    	switch(userOption){
 		    	case 1: //Get data from the country selected
 		    			String country = sc.nextLine();  
@@ -28,8 +40,8 @@ public class Requester {
 		    			//getSportMedals(sport);
 		    		break;
 		    	case 3: //Get data from the selected sport"
-	    				String athelete = sc.nextLine();
-	    				//getSportMedals(athelete);
+	    				String athlete = sc.nextLine();
+	    				//getSportMedals(athlete);
 		    		break;
 		    	case 4: System.exit(0);
 		    		break;
@@ -45,6 +57,14 @@ public class Requester {
 		System.out.println("2. Sport");
 		System.out.println("3. Athlete");
 		System.out.println("4. Exit");
+		
+	}
+	
+	public static void createQueue(){
+		
+	}
+	
+	public static void insertQueue(){
 		
 	}
 }
