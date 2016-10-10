@@ -1,4 +1,4 @@
-package WebCrawler;
+package MedalKeeper;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,6 +14,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.xml.sax.SAXException;
+
+import Unmarshall.Unmarshall;
 
 public class Receiver {
 	private ConnectionFactory cf;
@@ -31,7 +33,7 @@ public class Receiver {
 			msg = mc.receiveBody(String.class);
 			sendToFile(msg);
 			Validation validation = new Validation();
-			validation.Validation();
+			validation.Validation("example.xsd", "yolo_after.xml");
 		} catch (JMSRuntimeException re) {
 			re.printStackTrace();
 		}

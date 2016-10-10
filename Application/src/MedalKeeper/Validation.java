@@ -1,6 +1,8 @@
-package WebCrawler;
+package MedalKeeper;
 
 import org.xml.sax.SAXException;
+
+import Unmarshall.Unmarshall;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -33,20 +35,25 @@ import org.xml.sax.SAXException;
 
 public class Validation {
 	
-	public void Validation() throws SAXException, IOException{
-		Source schemaFile = new StreamSource(new File("example.xsd"));
-		Source xmlFile = new StreamSource(new File("yolo_after.xml"));
+	public void Validation(String xsd, String xml) throws SAXException, IOException{
+		Source schemaFile = new StreamSource(new File(xsd));
+		Source xmlFile = new StreamSource(new File(xml));
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		Schema schema = schemaFactory.newSchema(schemaFile);
 		Validator validator = schema.newValidator();try
 		{
 			validator.validate(xmlFile);
 			System.out.println(xmlFile.getSystemId() + " is valid");
+			Unmarshall unmarshall = new Unmarshall();
+			System.out.println("Sent to Unmarshall: " +xml);
+			unmarshall.toObject(xml);
+			
 		}catch(
 		SAXException e)
 		{
 			System.out.println(xmlFile.getSystemId() + " is NOT valid");
 			System.out.println("Reason: " + e.getLocalizedMessage());
+			
 		}
 	}
 }

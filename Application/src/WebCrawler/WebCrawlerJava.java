@@ -44,10 +44,7 @@ public class WebCrawlerJava {
 			ObjectFactory objects= new ObjectFactory();
 			
 			Countrycolection colection=  objects.createCountrycolection();
-			
-			
-			
-			try {
+		try {
 
 				doc = Jsoup.connect("https://www.rio2016.com/en/medal-count-country").get();
 				
