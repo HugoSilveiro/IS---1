@@ -12,7 +12,7 @@ import ConversionClasses.Countrycolection;
 public class Unmarshall {
 
 
-    public static void toObject(String xmlFile) {
+    public static Countrycolection toObject(String xmlFile) {
     	System.out.println(xmlFile);
         try {
 
@@ -24,7 +24,7 @@ public class Unmarshall {
 
             Countrycolection customer = (Countrycolection) jaxbUnmarshaller.unmarshal(file);
             System.out.println(customer);
-
+            return customer;
             //If needeed, return to xml -> Marshall
             /*
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -35,6 +35,7 @@ public class Unmarshall {
             */
         } catch (JAXBException e) {
             e.printStackTrace();
+            return null;
         }
 
     }

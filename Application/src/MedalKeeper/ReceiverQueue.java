@@ -15,16 +15,15 @@ import javax.naming.NamingException;
 
 import org.xml.sax.SAXException;
 
-import ConversionClasses.Countrycolection;
 import Unmarshall.Unmarshall;
 
-public class Receiver {
+public class ReceiverQueue {
 	private ConnectionFactory cf;
 	private Destination d;
-	private Countrycolection countryC;
-	public Receiver() throws NamingException {
+
+	public ReceiverQueue() throws NamingException {
 		this.cf = InitialContext.doLookup("jms/RemoteConnectionFactory");
-		this.d = InitialContext.doLookup("jms/topic/PC");
+		this.d = InitialContext.doLookup("jms/queue/PlayQueue");
 	}
 
 	String receive() throws SAXException, IOException {
@@ -32,9 +31,10 @@ public class Receiver {
 		try (JMSContext jcontex = cf.createContext("teste", "teste");) {
 			JMSConsumer mc = jcontex.createConsumer(d);
 			msg = mc.receiveBody(String.class);
-			sendToFile(msg);
-			Validation validation = new Validation();
-			countryC = validation.Validation("example.xsd", "yolo_after.xml");
+			//This message will contain the request
+			
+			//Send the request to Requester Class and Send to que MedalRequester via the temporary Queue
+			
 		} catch (JMSRuntimeException re) {
 			re.printStackTrace();
 		}

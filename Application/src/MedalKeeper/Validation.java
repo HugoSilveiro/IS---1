@@ -2,6 +2,7 @@ package MedalKeeper;
 
 import org.xml.sax.SAXException;
 
+import ConversionClasses.Countrycolection;
 import Unmarshall.Unmarshall;
 
 import java.io.BufferedWriter;
@@ -35,7 +36,7 @@ import org.xml.sax.SAXException;
 
 public class Validation {
 	
-	public void Validation(String xsd, String xml) throws SAXException, IOException{
+	public Countrycolection Validation(String xsd, String xml) throws SAXException, IOException{
 		Source schemaFile = new StreamSource(new File(xsd));
 		Source xmlFile = new StreamSource(new File(xml));
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -46,14 +47,15 @@ public class Validation {
 			System.out.println(xmlFile.getSystemId() + " is valid");
 			Unmarshall unmarshall = new Unmarshall();
 			System.out.println("Sent to Unmarshall: " +xml);
-			unmarshall.toObject(xml);
+			return (unmarshall.toObject(xml));
 			
 		}catch(
 		SAXException e)
+	
 		{
 			System.out.println(xmlFile.getSystemId() + " is NOT valid");
 			System.out.println("Reason: " + e.getLocalizedMessage());
-			
+			return null;
 		}
 	}
 }
