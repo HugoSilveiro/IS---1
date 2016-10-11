@@ -38,7 +38,9 @@ public class ReceiverQueue  extends Thread implements MessageListener{
 		this.d = InitialContext.doLookup("jms/queue/PlayQueue");
 		this.countryC = countryCAux;
 		String msg = null;
+		System.out.println("ReceiverQueue");
 		try (JMSContext jcontex = cf.createContext("teste", "teste");) {
+			
 			JMSConsumer mc = jcontex.createConsumer(d);
 			msg = mc.receiveBody(String.class);
 			
@@ -48,15 +50,15 @@ public class ReceiverQueue  extends Thread implements MessageListener{
 	}
 
 	@Override
-	public void onMessage(Message msg) {
-		// TODO Auto-generated method stub
-		
+	public void onMessage(Message textMsg) {
+	
+		System.out.println("onMessage");
 		TextMessage tmsg = (TextMessage) textMsg;
 		try{
-			Destination replyDestination = msg.getJMSReplyTo();
+			Destination replyDestination = textMsg.getJMSReplyTo();
 			//check if Countrycolection is empty
             if(countryC.getCountry().isEmpty()){
-                this.textMsg.setText("Price Keeper is empty!");
+                this.textMsg.setText("Empty!");
                 this.producer.send(replyDestination,this.textMsg);
                 return;
             }

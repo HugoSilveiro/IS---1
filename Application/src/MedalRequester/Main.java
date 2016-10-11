@@ -1,12 +1,13 @@
 package MedalRequester;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.jms.JMSException;
 import javax.naming.NamingException;
 
 public class Main {
-	public static void main(String[] args){
+	public static void main(String[] args) throws JMSException, IOException{
 		while(true){
 	    	display();
 	    	Scanner sc = new Scanner(System.in);
@@ -15,15 +16,15 @@ public class Main {
 	    	switch(userOption){
 		    	case 1: //Get data from the country selected
 		    			String country = sc.nextLine();  
-		    		    //String result = getCountryMedals(country);
+		    		    getCountryMedals();
 		    			
 			case 2: //Get data from the selected sport"
 		    			String sport = sc.nextLine();
-		    			//getSportMedals(sport);
+		    			getSportMedals();
 		    			
 			case 3: //Get data from the selected sport"
 	    				String athlete = sc.nextLine();
-	    				//getSportMedals(athlete);
+	    				getSportMedals();
 			case 4: System.exit(0);
 		    		break;
 		    	default: System.out.println("Invalid Option");
@@ -41,7 +42,8 @@ public class Main {
 		
 	}
 	
-	public static void getCountryMedals() throws JMSException{
+	public static void getCountryMedals() throws JMSException, IOException{
+		System.out.println("Keyword:");
 		Scanner sc = new Scanner(System.in);
 		String country = sc.nextLine();
 		Requester r = null;
@@ -57,7 +59,8 @@ public class Main {
         }
 	}
 	
-	public static void getSportMedals() throws JMSException{
+	public static void getSportMedals() throws JMSException, IOException{
+		System.out.println("Keyword:");
 		Scanner sc = new Scanner(System.in);
 		String sport = sc.nextLine();
 		Requester r = null;
@@ -73,7 +76,8 @@ public class Main {
         }
 	}
 	
-	public static void getAthleteMedals() throws JMSException{
+	public static void getAthleteMedals() throws JMSException, IOException{
+		System.out.println("Keyword:");
 		Scanner sc = new Scanner(System.in);
 		String athlete = sc.nextLine();
 		Requester r = null;

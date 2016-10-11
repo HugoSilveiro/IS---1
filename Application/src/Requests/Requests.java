@@ -18,7 +18,8 @@ public class Requests {
 
 	public String getInfo(String searchType, String keyword, Countrycolection countryC) {
 		if(searchType.equals("country")){
-			String countryMedals = getMedalsPerCountry(keyword, countryC);
+			//String countryMedals = getMedalsPerCountry(keyword, countryC);
+			String countryMedals = "PORTUGAL";
 			return countryMedals;
 		}
 		else if(searchType.equals("sport")){

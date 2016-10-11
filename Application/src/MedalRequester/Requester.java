@@ -42,11 +42,12 @@ public class Requester implements MessageListener{
 		this.d = InitialContext.doLookup("jms/queue/PlayQueue");
 	}
 	
-	public void sendRequest(String request) throws JMSException {
+	public void sendRequest(String request) throws JMSException, IOException {
+		System.out.println("Request: "+request);
 		String msg = null;
 		try (JMSContext jcontext = cf.createContext("teste", "teste");) {
 			JMSProducer mp = jcontext.createProducer();
-			
+			System.out.println("Creating temporary QUEUE");
 			//Temporary QUEUE
 			Destination tempQueue = jcontext.createTemporaryQueue();
 			JMSConsumer replyConsumer = jcontext.createConsumer(tempQueue);
@@ -57,9 +58,9 @@ public class Requester implements MessageListener{
 			requestMessage.setText(request);
 			
 			requestMessage.setJMSReplyTo(tempQueue);
-			
+			System.out.println("mp.send");
 			mp.send(d, requestMessage);
-			//System.in.read();
+			System.in.read();
 		} catch (JMSRuntimeException re) {
 			re.printStackTrace();
 		} 
@@ -67,14 +68,14 @@ public class Requester implements MessageListener{
 	}
 
 	@Override
-	public void onMessage(Message msg) {
+	public void onMessage(Message textMsg) {
 		//Check if keeper replied
 		String message = null;
         System.out.println("KEEPER REPLIED!\n");
         try{
-            if(msg instanceof TextMessage){
-                TextMessage tMsg = (TextMessage) msg;
-                message = tMsg.getText();
+            if(textMsg instanceof TextMessage){
+                TextMessage tmsg = (TextMessage) textMsg;
+                message = tmsg.getText();
                 System.out.println(message);
             }
         }catch(JMSException e){
