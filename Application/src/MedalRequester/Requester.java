@@ -10,6 +10,7 @@ import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.JMSProducer;
 import javax.jms.JMSRuntimeException;
+import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 import javax.naming.InitialContext;
@@ -58,10 +59,10 @@ public class Requester {
 			requestMessage.setJMSReplyTo(tempQueue);
 			
 			mp.send(d, requestMessage);
-			
+			//System.in.read();
 		} catch (JMSRuntimeException re) {
 			re.printStackTrace();
-		}
+		} 
 		
 	}
 }

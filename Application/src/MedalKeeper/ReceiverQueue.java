@@ -9,36 +9,76 @@ import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
+import javax.jms.JMSException;
+import javax.jms.JMSProducer;
 import javax.jms.JMSRuntimeException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.xml.sax.SAXException;
 
+import ConversionClasses.Countrycolection;
+import Requests.Requests;
 import Unmarshall.Unmarshall;
 
-public class ReceiverQueue {
+public class ReceiverQueue  extends Thread implements MessageListener{
 	private ConnectionFactory cf;
 	private Destination d;
-
-	public ReceiverQueue() throws NamingException {
+	private Countrycolection countryC;
+	
+	private JMSProducer producer;
+	private JMSConsumer consumer;
+	private TextMessage textMsg;
+	
+	public ReceiverQueue() throws NamingException, SAXException, IOException {
 		this.cf = InitialContext.doLookup("jms/RemoteConnectionFactory");
 		this.d = InitialContext.doLookup("jms/queue/PlayQueue");
-	}
-
-	String receive() throws SAXException, IOException {
 		String msg = null;
 		try (JMSContext jcontex = cf.createContext("teste", "teste");) {
 			JMSConsumer mc = jcontex.createConsumer(d);
 			msg = mc.receiveBody(String.class);
-			//This message will contain the request
-			
-			//Send the request to Requester Class and Send to the MedalRequester via the temporary Queue
 			
 		} catch (JMSRuntimeException re) {
 			re.printStackTrace();
 		}
-		return msg;
 	}
+
+	@Override
+	public void onMessage(Message msg) {
+		// TODO Auto-generated method stub
+		
+		TextMessage tmsg = (TextMessage) textMsg;
+		try{
+			Destination replyDestination = msg.getJMSReplyTo();
+			//check if Countrycolection is empty
+            if(countryC.getCountry().isEmpty()){
+                this.textMsg.setText("Price Keeper is empty!");
+                this.producer.send(replyDestination,this.textMsg);
+                return;
+            }
+            
+            String aux = ((TextMessage)textMsg).getText();
+            String[] split = aux.split("/");
+            String searchType = split[0];
+            String keyword = split[1];
+            System.out.println("Request type: "+searchType+ "/nKeyword: "+keyword);
+            
+            
+            String replyMsg;
+            Requests newReq = new Requests();
+            replyMsg = newReq.getInfo(searchType, keyword, countryC);
+            
+            this.textMsg.setText(replyMsg);
+            this.producer.send(replyDestination, textMsg);
+            
+		}catch (JMSException e){
+			e.printStackTrace();
+		}
+		
+	}
+	
 
 }

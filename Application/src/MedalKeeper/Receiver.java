@@ -10,6 +10,8 @@ import javax.jms.Destination;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
 import javax.jms.JMSRuntimeException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -18,16 +20,13 @@ import org.xml.sax.SAXException;
 import ConversionClasses.Countrycolection;
 import Unmarshall.Unmarshall;
 
-public class Receiver {
+public class Receiver extends Thread implements MessageListener{
 	private ConnectionFactory cf;
 	private Destination d;
 	private Countrycolection countryC;
-	public Receiver() throws NamingException {
+	public Receiver() throws NamingException, SAXException, IOException {
 		this.cf = InitialContext.doLookup("jms/RemoteConnectionFactory");
 		this.d = InitialContext.doLookup("jms/topic/PC");
-	}
-
-	String receive() throws SAXException, IOException {
 		String msg = null;
 		try (JMSContext jcontex = cf.createContext("teste", "teste");) {
 			JMSConsumer mc = jcontex.createConsumer(d);
@@ -38,8 +37,8 @@ public class Receiver {
 		} catch (JMSRuntimeException re) {
 			re.printStackTrace();
 		}
-		return msg;
 	}
+
 	private void sendToFile(String xmlContent){
 		try {
 			File file = new File("yolo_after.xml");
@@ -58,6 +57,13 @@ public class Receiver {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onMessage(Message arg0) {
+		// TODO Auto-generated method stub
+		System.out.println("onMessage");
+		
 	}
 
 }

@@ -15,45 +15,44 @@ import ConversionClasses.Countrycolection.Country;
 import ConversionClasses.Countrycolection.Country.Medalcolection.Medal;
 
 public class Requests {
-	/*public static void getMedalsPerCountry(String country){
+
+	public String getInfo(String searchType, String keyword, Countrycolection countryC) {
+		if(searchType.equals("country")){
+			String countryMedals = getMedalsPerCountry(keyword, countryC);
+			return countryMedals;
+		}
+		else if(searchType.equals("sport")){
+			String sportMedals = getMedalsPerSport(keyword, countryC);
+			return sportMedals;
+		}
+		else if(searchType.equals("athlete")){
+			String athleteMedals = getMedalsPerAthlete(keyword, countryC);
+			return athleteMedals;
+		}
+		else{
+			return null;
+		}
+		
+	}
+	public static String getMedalsPerCountry(String country, Countrycolection countryC){
 		//Receive the object of the Countrycollection
 		//Get the medals for the specific country
-		List<Countrycolection.Country> list = Countrycolection.getCountry();
-		for (Country p : list) {
-			if (country.equals(p.getNation())){
-				System.out.println("Country " + p.getNation());
-				if(p.getTotal() > 0){
-					System.out.println(p.getGolds() + p.getSilvers() + p.getBronzes());
-				}
-			}		
-		}
+		
+		return null;
 	}
 	
-	public static void getMedalsPerSport(String sport){
-		//Get the medals for the specific sport
-		List<Country> list = q.getResultList();
-		for (Country p : list) {
-			for(Medal m: p.getMedalcolection().getMedal())
-			if (sport.equals(p.getNation())){
-				System.out.println("Country " + p.getNation());
-				if(p.getTotal() > 0){
-					System.out.println(p.getGolds() + p.getSilvers() + p.getBronzes());
-				}
-			}		
-		}
+	public static String getMedalsPerSport(String sport, Countrycolection countryC){
+		//Receive the object of the Countrycollection
+		//Get the medals for the specific Sport
+		
+		return null;
+	
 	}
 	
-	public static void getMedalsPerAthlete(String athlete){
+	public static String getMedalsPerAthlete(String athlete, Countrycolection countryC){
+		//Receive the object of the Countrycollection
 		//Get the medals for the specific athlete
-		List<Country> list = q.getResultList();
-		for (Country p : list) {
-			p.getMedalcolection().getMedal().
-			if (athlete.equals(p.getNation())){
-				System.out.println("Country " + p.getNation());
-				if(p.getTotal() > 0){
-					System.out.println(p.getGolds() + p.getSilvers() + p.getBronzes());
-				}
-			}		
-		}
-	}*/
+		
+		return null;
+	}
 }

@@ -11,8 +11,10 @@ public class ReceiverHandler {
 		//Creete 2 Threads
 		//Syncronized Object
 		Receiver r = new Receiver();
-
-		String msg = r.receive();
+		r.start();
+		
+		//ReceiverQueue rQ = new ReceiverQueue();
+		//rQ.receive();
 		//System.out.println("Message: " + msg);
 	}
 }

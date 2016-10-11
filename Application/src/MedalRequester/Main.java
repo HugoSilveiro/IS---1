@@ -63,7 +63,7 @@ public class Main {
 		
 		try {
 			r = new Requester();
-			String request = "country/"+sport;
+			String request = "sport/"+sport;
 			r.sendRequest(request);
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
@@ -78,7 +78,7 @@ public class Main {
 		
 		try {
 			r = new Requester();
-			String request = "country/"+athlete;
+			String request = "athlete/"+athlete;
 			r.sendRequest(request);
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
