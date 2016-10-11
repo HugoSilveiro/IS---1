@@ -34,7 +34,7 @@ public class WebCrawlerJava {
 			Sender sender;
 			try {
 				sender=new Sender();
-				sender.send("oláa");
+				sender.send();
 			} catch (NamingException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

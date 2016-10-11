@@ -51,9 +51,10 @@ public class Main {
 			String request = "country/"+country;
 			r.sendRequest(request);
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            e.printStackTrace();
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	public static void getSportMedals() throws JMSException{
@@ -66,9 +67,10 @@ public class Main {
 			String request = "sport/"+sport;
 			r.sendRequest(request);
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            e.printStackTrace();
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	public static void getAthleteMedals() throws JMSException{
@@ -81,9 +83,10 @@ public class Main {
 			String request = "athlete/"+athlete;
 			r.sendRequest(request);
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            e.printStackTrace();
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	

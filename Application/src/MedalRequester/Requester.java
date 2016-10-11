@@ -33,7 +33,7 @@ import javax.persistence.TemporalType;
 
 
 
-public class Requester {
+public class Requester implements MessageListener{
 	private static ConnectionFactory cf;
 	private static Destination d;
 	public Requester() throws NamingException{
@@ -63,6 +63,23 @@ public class Requester {
 		} catch (JMSRuntimeException re) {
 			re.printStackTrace();
 		} 
+		
+	}
+
+	@Override
+	public void onMessage(Message msg) {
+		//Check if keeper replied
+		String message = null;
+        System.out.println("KEEPER REPLIED!\n");
+        try{
+            if(msg instanceof TextMessage){
+                TextMessage tMsg = (TextMessage) msg;
+                message = tMsg.getText();
+                System.out.println(message);
+            }
+        }catch(JMSException e){
+            e.printStackTrace();
+        }
 		
 	}
 }

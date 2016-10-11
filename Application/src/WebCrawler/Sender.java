@@ -27,7 +27,7 @@ public class Sender {
 		this.d = InitialContext.doLookup("jms/topic/PC");
 	}
 
-	public void send(String text) throws IOException {
+	public void send() throws IOException {
 		try (JMSContext jcontext = cf.createContext("teste", "teste");) {
 			JMSProducer mp = jcontext.createProducer();
 			String xmlContent = readFile("yolo.xml");

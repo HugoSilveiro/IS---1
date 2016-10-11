@@ -33,9 +33,10 @@ public class ReceiverQueue  extends Thread implements MessageListener{
 	private JMSConsumer consumer;
 	private TextMessage textMsg;
 	
-	public ReceiverQueue() throws NamingException, SAXException, IOException {
+	public ReceiverQueue(Countrycolection countryCAux) throws NamingException, SAXException, IOException {
 		this.cf = InitialContext.doLookup("jms/RemoteConnectionFactory");
 		this.d = InitialContext.doLookup("jms/queue/PlayQueue");
+		this.countryC = countryCAux;
 		String msg = null;
 		try (JMSContext jcontex = cf.createContext("teste", "teste");) {
 			JMSConsumer mc = jcontex.createConsumer(d);
