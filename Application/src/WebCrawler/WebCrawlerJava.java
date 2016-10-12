@@ -1,15 +1,23 @@
 package WebCrawler;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.w3c.dom.Document;
+import org.xnio.IoUtils;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 import ConversionClasses.ObjectFactory;
 import ConversionClasses.Countrycolection;
@@ -19,32 +27,30 @@ import ConversionClasses.Countrycolection.Country.Medalcolection.Medal;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSContext;
+import javax.jms.JMSException;
 import javax.jms.JMSProducer;
 import javax.jms.JMSRuntimeException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class WebCrawlerJava {
-	public static void main(String[] args) throws NamingException, IOException {
+	public static void main(String[] args) throws NamingException, JMSException, IOException, InterruptedException {
 		
 			org.jsoup.nodes.Document doc;
 			Elements newRef;
 			
-			
-			Sender sender;
-			try {
-				sender=new Sender();
-				sender.send();
-			} catch (NamingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			boolean printing=false;
+			int timeOut=5000;
 
 			
 			ObjectFactory objects= new ObjectFactory();
 			
 			Countrycolection colection=  objects.createCountrycolection();
-		try {
+			
+			while(true){
+
+				System.out.println("Working");
+			try {
 
 				doc = Jsoup.connect("https://www.rio2016.com/en/medal-count-country").get();
 				
@@ -54,6 +60,7 @@ public class WebCrawlerJava {
 				for(Element e: content){
 					Country country = objects.createCountrycolectionCountry();
 					//Get the overall stats of each nation
+					if(printing){
 					System.out.print(e.select("td.col-1").text() + "  ");
 					System.out.print(e.select("td.col-2").text() + "  ");
 					System.out.print(e.select("td.col-3").text() + "  ");
@@ -62,7 +69,7 @@ public class WebCrawlerJava {
 					System.out.print(e.select("td.col-6").text() + "  ");
 					
 					System.out.println(e.select("td.col-7").text());
-					
+					}
 					country.setShortname(e.select("td.col-2").text());
 					country.setNation(e.select("td.col-3").text());
 					country.setGolds(Integer.parseInt(e.select("td.col-4").text()));
@@ -86,11 +93,13 @@ public class WebCrawlerJava {
 						Medal medal = objects.createCountrycolectionCountryMedalcolectionMedal();
 						
 						Elements medalDetails = winnersDetails.get(j).getElementsByTag("td");
+						if(printing){
 						System.out.print((j)+": ");
 						System.out.print(medalDetails.select("td.col-1").text() + "   ");
 						System.out.print(medalDetails.select("td.col-2").text() + "   ");
 						System.out.print(medalDetails.select("td.col-3").text() + "   ");
 						System.out.println(medalDetails.select("td.col-4").text() + "   ");
+						}
 						if(golds>0){
 							medal.setMedal("Gold");
 							golds--;
@@ -111,15 +120,30 @@ public class WebCrawlerJava {
 					}
 					colection.getCountry().add(country);
 				}
-				
-			} catch (IOException e) {
-				
-				e.printStackTrace();
+
+				timeOut=10000;
+			} catch (Exception e) {
+				timeOut=timeOut*2;
+				System.out.println("Can't connect to the website, waiting "+timeOut+" seconds");
+				//e.printStackTrace();
 			}
 			
 			
 			jaxbObjectToXML(colection);
-		
+			
+
+			Sender sender;
+			String xmlDoc = Files.toString( new File("yolo.xml"), Charsets.UTF_8 );
+			try {
+				sender=new Sender();
+				sender.send();
+			} catch (NamingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			System.out.println("Waiting "+timeOut+" seconds");
+			Thread.sleep(timeOut);
+			}
 	}
 	
 

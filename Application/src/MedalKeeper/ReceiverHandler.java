@@ -14,11 +14,15 @@ public class ReceiverHandler {
 		//Creete 2 Threads
 		//Syncronized Object
 		
-		//Receiver r = new Receiver(countryC);
-		//r.start();
+		Receiver r = new Receiver(countryC);
+		r.start();
+		
+		System.out.println("Waiting for requests...");
 		
 		ReceiverQueue rQ = new ReceiverQueue(countryC);
 		rQ.start();
 		//System.out.println("Message: " + msg);
+	
+
 	}
 }

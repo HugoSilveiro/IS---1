@@ -37,22 +37,23 @@ public class ReceiverQueue  extends Thread implements MessageListener{
 		this.cf = InitialContext.doLookup("jms/RemoteConnectionFactory");
 		this.d = InitialContext.doLookup("jms/queue/PlayQueue");
 		this.countryC = countryCAux;
-		String msg = null;
+		/*String msg = null;
 		System.out.println("ReceiverQueue");
-		try (JMSContext jcontex = cf.createContext("teste", "teste");) {
+		try (JMSContext jcontex = cf.createContext("teste1", "teste1");) {
 			
 			JMSConsumer mc = jcontex.createConsumer(d);
 			msg = mc.receiveBody(String.class);
 			
 		} catch (JMSRuntimeException re) {
 			re.printStackTrace();
-		}
+		}*/
 	}
 
 	@Override
 	public void onMessage(Message textMsg) {
 	
 		System.out.println("onMessage");
+		
 		TextMessage tmsg = (TextMessage) textMsg;
 		try{
 			Destination replyDestination = textMsg.getJMSReplyTo();
@@ -75,7 +76,7 @@ public class ReceiverQueue  extends Thread implements MessageListener{
             replyMsg = newReq.getInfo(searchType, keyword, countryC);
             
             this.textMsg.setText(replyMsg);
-            this.producer.send(replyDestination, textMsg);
+            this.producer.send(replyDestination, this.textMsg);
             
 		}catch (JMSException e){
 			e.printStackTrace();

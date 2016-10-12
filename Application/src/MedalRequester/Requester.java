@@ -45,7 +45,7 @@ public class Requester implements MessageListener{
 	public void sendRequest(String request) throws JMSException, IOException {
 		System.out.println("Request: "+request);
 		String msg = null;
-		try (JMSContext jcontext = cf.createContext("teste", "teste");) {
+		try (JMSContext jcontext = cf.createContext("teste1", "teste1");) {
 			JMSProducer mp = jcontext.createProducer();
 			System.out.println("Creating temporary QUEUE");
 			//Temporary QUEUE

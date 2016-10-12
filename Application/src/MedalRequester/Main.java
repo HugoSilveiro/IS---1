@@ -17,15 +17,18 @@ public class Main {
 		    	case 1: //Get data from the country selected
 		    			String country = sc.nextLine();  
 		    		    getCountryMedals();
+		    		    break;
 		    			
 			case 2: //Get data from the selected sport"
 		    			String sport = sc.nextLine();
 		    			getSportMedals();
-		    			
+		    			break;
 			case 3: //Get data from the selected sport"
 	    				String athlete = sc.nextLine();
 	    				getSportMedals();
+	    				break;
 			case 4: System.exit(0);
+					System.out.println("Exiting...");
 		    		break;
 		    	default: System.out.println("Invalid Option");
 		    		break;
