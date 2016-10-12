@@ -1,18 +1,10 @@
 package MedalRequester;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.Scanner;
 
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.JMSConsumer;
-import javax.jms.JMSContext;
-import javax.jms.JMSException;
-import javax.jms.JMSProducer;
-import javax.jms.JMSRuntimeException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import javax.jms.*;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -42,30 +34,67 @@ public class Requester implements MessageListener{
 		this.d = InitialContext.doLookup("jms/queue/PlayQueue");
 	}
 	
-	public void sendRequest(String request) throws JMSException, IOException {
+	public void sendRequest(String request) throws JMSException{
 		System.out.println("Request: "+request);
 		String msg = null;
-		try (JMSContext jcontext = cf.createContext("teste1", "teste1");) {
+		try (JMSContext jcontext = cf.createContext("teste", "teste");) {
 			JMSProducer mp = jcontext.createProducer();
 			System.out.println("Creating temporary QUEUE");
-			//Temporary QUEUE
-			Destination tempQueue = jcontext.createTemporaryQueue();
-			JMSConsumer replyConsumer = jcontext.createConsumer(tempQueue);
-			
-			replyConsumer.setMessageListener((MessageListener) this);
 			
 			TextMessage requestMessage = jcontext.createTextMessage();
 			requestMessage.setText(request);
 			
+			//Temporary QUEUE
+			Destination tempQueue = jcontext.createTemporaryQueue();
+			
+			//replyConsumer.setMessageListener(this);
+			
+			
+			String correlationId = this.createRandomString();
+			System.out.println(tempQueue);
+			requestMessage.setJMSCorrelationID(correlationId);
 			requestMessage.setJMSReplyTo(tempQueue);
-			System.out.println("mp.send");
+			
+            System.out.println("d: "+d);
 			mp.send(d, requestMessage);
-			System.in.read();
+			System.out.println("mp.send: "+requestMessage);
+			jcontext.stop();
+
+
+			JMSConsumer mc = jcontext.createConsumer(tempQueue);
+			System.out.println("put listener");
+			Message message = mc.receive();
+			System.out.println("received: "+message.getStringProperty("answer"));
+			
+
 		} catch (JMSRuntimeException re) {
 			re.printStackTrace();
 		} 
 		
 	}
+	
+	
+	public void receiveAnswer(Destination queue) throws JMSException{
+		
+		System.out.println("Receiving Answer");
+		try (JMSContext jcontext = cf.createContext("teste", "teste");) {
+
+
+			
+			
+		} catch (JMSRuntimeException re) {
+			re.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	private String createRandomString() {
+        Random random = new Random(System.currentTimeMillis());
+        long randomLong = random.nextLong();
+        return Long.toHexString(randomLong);
+    }
 
 	@Override
 	public void onMessage(Message textMsg) {

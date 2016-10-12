@@ -32,38 +32,76 @@ public class ReceiverQueue  extends Thread implements MessageListener{
 	private JMSProducer producer;
 	private JMSConsumer consumer;
 	private TextMessage textMsg;
+	private Message tmsg;
 	
-	public ReceiverQueue(Countrycolection countryCAux) throws NamingException, SAXException, IOException {
+	public ReceiverQueue(Countrycolection countryCAux) throws NamingException, SAXException, IOException, JMSException {
 		this.cf = InitialContext.doLookup("jms/RemoteConnectionFactory");
 		this.d = InitialContext.doLookup("jms/queue/PlayQueue");
 		this.countryC = countryCAux;
-		/*String msg = null;
-		System.out.println("ReceiverQueue");
-		try (JMSContext jcontex = cf.createContext("teste1", "teste1");) {
-			
-			JMSConsumer mc = jcontex.createConsumer(d);
-			msg = mc.receiveBody(String.class);
-			
-		} catch (JMSRuntimeException re) {
-			re.printStackTrace();
-		}*/
+		while(true){
+			Message msg = null;
+			System.out.println("ReceiverQueue");
+			try (JMSContext jcontext = cf.createContext("teste1", "teste1");) {
+				
+				JMSConsumer mc = jcontext.createConsumer(d);
+				tmsg =  jcontext.createMessage();
+				//mc.setMessageListener(this);
+				System.out.println("put listener");
+				msg = mc.receive();
+				
+				
+				Message msgToSend=jcontext.createMessage();
+				msgToSend.setStringProperty("answer", "pai");
+				msgToSend.setJMSCorrelationID(msg.getJMSCorrelationID());
+				msgToSend.setJMSReplyTo(msg.getJMSReplyTo());
+				
+				System.out.println(msg.getJMSReplyTo());
+				replyFunct(msg, msgToSend);
+				
+				
+			} catch (JMSRuntimeException re) {
+				re.printStackTrace();
+			}
+		}
 	}
+	
+	
+	public void replyFunct(Message msg, Message messageToSend) throws NamingException, JMSException{
+		
+		System.out.println("oi crl");
+	
+		JMSContext jcontexts = cf.createContext("teste1", "teste1");
 
+		JMSProducer mcs = jcontexts.createProducer();
+
+		System.out.println(msg.getJMSReplyTo());
+		messageToSend.setStringProperty("answer", "f");
+		mcs.send(msg.getJMSReplyTo(), messageToSend);
+		System.out.print("mandei");
+		
+		
+	}
+	
+	
+	
+	
+		
 	@Override
 	public void onMessage(Message textMsg) {
 	
 		System.out.println("onMessage");
 		
-		TextMessage tmsg = (TextMessage) textMsg;
+		
 		try{
-			Destination replyDestination = textMsg.getJMSReplyTo();
-			//check if Countrycolection is empty
-            if(countryC.getCountry().isEmpty()){
+            /*if(countryC.getCountry().isEmpty()){
                 this.textMsg.setText("Empty!");
                 this.producer.send(replyDestination,this.textMsg);
                 return;
             }
-            
+            */
+
+			
+			System.out.println(textMsg.getJMSCorrelationID());
             String aux = ((TextMessage)textMsg).getText();
             String[] split = aux.split("/");
             String searchType = split[0];
@@ -71,12 +109,17 @@ public class ReceiverQueue  extends Thread implements MessageListener{
             System.out.println("Request type: "+searchType+ "/nKeyword: "+keyword);
             
             
+            
             String replyMsg;
             Requests newReq = new Requests();
             replyMsg = newReq.getInfo(searchType, keyword, countryC);
+
+            tmsg.setStringProperty("query", "pai");
             
-            this.textMsg.setText(replyMsg);
-            this.producer.send(replyDestination, this.textMsg);
+            
+            tmsg.setJMSCorrelationID(textMsg.getJMSCorrelationID());
+            System.out.println(replyMsg);
+            producer.send(textMsg.getJMSReplyTo(), tmsg);
             
 		}catch (JMSException e){
 			e.printStackTrace();

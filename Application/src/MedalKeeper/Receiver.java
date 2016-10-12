@@ -24,7 +24,7 @@ public class Receiver extends Thread implements MessageListener{
 	private ConnectionFactory cf;
 	private Destination d;
 	
-	public Receiver(Countrycolection countryC) throws NamingException, SAXException, IOException {
+	public Receiver(Countrycolection countryC) throws NamingException, SAXException, IOException{
 		this.cf = InitialContext.doLookup("jms/RemoteConnectionFactory");
 		this.d = InitialContext.doLookup("jms/topic/PC");
 		String msg = null;
