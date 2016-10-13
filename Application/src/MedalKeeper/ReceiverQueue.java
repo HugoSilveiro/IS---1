@@ -45,7 +45,7 @@ public class ReceiverQueue  extends Thread implements MessageListener{
 				JMSConsumer mc = jcontext.createConsumer(d);
 				tmsg =  jcontext.createMessage();
 				//mc.setMessageListener(this);
-				System.out.println("put listener");
+				System.out.println("Waiting for request...");
 				
 				msg = mc.receive();
 				
@@ -57,13 +57,13 @@ public class ReceiverQueue  extends Thread implements MessageListener{
 	             System.out.println("Request type: "+searchType+ "\n"+"Keyword: "+keyword);
 	             
 
-	 			System.out.println("total countries: " + ReceiverHandler.countryC.getCountry().size());
+	 			//System.out.println("total countries: " + ReceiverHandler.countryC.getCountry().size());
 				Message msgToSend=jcontext.createMessage();
 				msgToSend.setStringProperty("answer",Requests.getInfo(searchType, keyword, ReceiverHandler.countryC));
 				msgToSend.setJMSCorrelationID(msg.getJMSCorrelationID());
 				msgToSend.setJMSReplyTo(msg.getJMSReplyTo());
 				
-				System.out.println(msg.getJMSReplyTo());
+				//System.out.println(msg.getJMSReplyTo());
 				replyFunct(msg, msgToSend);
 				
 				
@@ -76,15 +76,15 @@ public class ReceiverQueue  extends Thread implements MessageListener{
 	
 	public void replyFunct(Message msg, Message messageToSend) throws NamingException, JMSException{
 		
-		System.out.println("oi crl");
+		System.out.println("Sending the information to the requester...");
 	
 		JMSContext jcontexts = cf.createContext("teste1", "teste1");
 
 		JMSProducer mcs = jcontexts.createProducer();
 
-		System.out.println(msg.getJMSReplyTo());
+		//System.out.println(msg.getJMSReplyTo());
 		mcs.send(msg.getJMSReplyTo(), messageToSend);
-		System.out.print("mandei");
+		System.out.println("Send...");
 		
 		
 	}

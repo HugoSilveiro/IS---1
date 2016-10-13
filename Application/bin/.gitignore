@@ -1,6 +1,11 @@
-/MedalKeeper/
-/MedalRequester/
+/ConversionClasses/
 /Creator/
 /HTMLTemplate.xsl
-/WebCrawler/
+/META-INF/
+/MedalKeeper/
+/MedalRequester/
 /Requests/
+/Unmarshall/
+/WebCrawler/
+/example.xsd
+/jndi.properties

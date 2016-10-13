@@ -51,20 +51,26 @@ public class Requester implements MessageListener{
 			
 			
 			String correlationId = this.createRandomString();
-			System.out.println(tempQueue);
+			//System.out.println(tempQueue);
 			requestMessage.setJMSCorrelationID(correlationId);
 			requestMessage.setJMSReplyTo(tempQueue);
 			
-            System.out.println("d: "+d);
+            //System.out.println("d: "+d);
 			mp.send(d, requestMessage);
-			System.out.println("mp.send: "+requestMessage);
+			//System.out.println("mp.send: "+requestMessage);
 			jcontext.stop();
 
 
 			JMSConsumer mc = jcontext.createConsumer(tempQueue);
-			System.out.println("put listener");
+			//System.out.println("put listener");
 			Message message = mc.receive();
-			System.out.println("received: "+message.getStringProperty("answer"));
+			System.out.println("Received Information:");
+			if(message.getStringProperty("answer").equals("") ){
+				System.out.println("No matches for your search.... Try again!");
+			}else{
+				System.out.println(message.getStringProperty("answer"));
+			}
+			
 			
 
 		} catch (JMSRuntimeException re) {

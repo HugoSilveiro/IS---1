@@ -13,7 +13,7 @@ public class Unmarshall {
 
 
     public static Countrycolection toObject(String xmlFile) {
-    	System.out.println(xmlFile);
+    	//System.out.println(xmlFile);
         try {
 
             File file = new File(xmlFile);
@@ -23,7 +23,7 @@ public class Unmarshall {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
             Countrycolection customer = (Countrycolection) jaxbUnmarshaller.unmarshal(file);
-            System.out.println(customer);
+            //System.out.println(customer);
             return customer;
             //If needeed, return to xml -> Marshall
             /*

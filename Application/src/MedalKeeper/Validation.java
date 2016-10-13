@@ -44,9 +44,9 @@ public class Validation {
 		Validator validator = schema.newValidator();try
 		{
 			validator.validate(xmlFile);
-			System.out.println(xmlFile.getSystemId() + " is valid");
+			System.out.println("Is valid");
 			Unmarshall unmarshall = new Unmarshall();
-			System.out.println("Sent to Unmarshall: " +xml);
+			//System.out.println("Sent to Unmarshall: " +xml);
 			return (unmarshall.toObject(xml));
 			
 		}catch(

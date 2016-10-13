@@ -34,7 +34,7 @@ public class Receiver extends Thread implements MessageListener{
 			sendToFile(msg);
 			Validation validation = new Validation();
 			ReceiverHandler.countryC = validation.Validation("example.xsd", "yolo_after.xml");
-			System.out.println("total countries: " +  ReceiverHandler.countryC.getCountry().size());
+			//System.out.println("total countries: " +  ReceiverHandler.countryC.getCountry().size());
 		} catch (JMSRuntimeException re) {
 			re.printStackTrace();
 		}
@@ -53,7 +53,7 @@ public class Receiver extends Thread implements MessageListener{
 			bw.write(xmlContent);
 			bw.close();
 
-			System.out.println("Done");
+			//System.out.println("Done");
 
 		} catch (IOException e) {
 			e.printStackTrace();

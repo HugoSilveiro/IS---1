@@ -24,7 +24,7 @@ public class ReceiverHandler {
 		*/
 		Receiver r = new Receiver();
 		r.start();
-		System.out.println("Waiting for requests...");
+		//System.out.println("Waiting for requests...");
 		
 		while(countryC==null){
 			Thread.sleep(1000);
