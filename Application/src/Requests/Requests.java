@@ -16,10 +16,12 @@ import ConversionClasses.Countrycolection.Country.Medalcolection.Medal;
 
 public class Requests {
 
-	public String getInfo(String searchType, String keyword, Countrycolection countryC) {
+	public static String getInfo(String searchType, String keyword, Countrycolection countryC) {
+		if(countryC==null){
+			return "Nada a apresentar por não ter dados";
+		}
 		if(searchType.equals("country")){
-			//String countryMedals = getMedalsPerCountry(keyword, countryC);
-			String countryMedals = "PORTUGAL";
+			String countryMedals = getMedalsPerCountry(keyword, countryC);
 			return countryMedals;
 		}
 		else if(searchType.equals("sport")){
@@ -31,29 +33,57 @@ public class Requests {
 			return athleteMedals;
 		}
 		else{
-			return null;
+			return "Nada a apresentar";
 		}
 		
 	}
 	public static String getMedalsPerCountry(String country, Countrycolection countryC){
-		//Receive the object of the Countrycollection
-		//Get the medals for the specific country
+		String output="";
+		for(Country c: countryC.getCountry()){
+			if(c.getNation().equals(country)){
+				for(Medal m: c.getMedalcolection().getMedal()){
+					output=output+m.getMedal()+"    "+m.getSport()+"   "+m.getCategorie()+"    "+m.getWinner()+"\n";
+				}
+			}
+		}
 		
-		return null;
+		return output;
 	}
 	
 	public static String getMedalsPerSport(String sport, Countrycolection countryC){
 		//Receive the object of the Countrycollection
 		//Get the medals for the specific Sport
 		
-		return null;
+		String output="";
+		for(Country c: countryC.getCountry()){
+				for(Medal m: c.getMedalcolection().getMedal()){
+
+					if(m.getSport().equals(sport)){
+					output=output+m.getMedal()+"    "+m.getSport()+"   "+m.getCategorie()+"    "+m.getWinner()+"\n";
+					}
+				}
+			
+		}
+		
+		return output;
+		
 	
 	}
 	
 	public static String getMedalsPerAthlete(String athlete, Countrycolection countryC){
-		//Receive the object of the Countrycollection
-		//Get the medals for the specific athlete
+		String output="";
+		for(Country c: countryC.getCountry()){
+				for(Medal m: c.getMedalcolection().getMedal()){
+
+					if(m.getWinner().equals(athlete)){
+						output=output+m.getMedal()+"    "+m.getSport()+"   "+m.getCategorie()+"    "+m.getWinner()+"\n";
+					}
+				}
+			
+		}
 		
-		return null;
+		return output;
+		
+	
 	}
 }

@@ -34,10 +34,9 @@ public class ReceiverQueue  extends Thread implements MessageListener{
 	private TextMessage textMsg;
 	private Message tmsg;
 	
-	public ReceiverQueue(Countrycolection countryCAux) throws NamingException, SAXException, IOException, JMSException {
+	public ReceiverQueue() throws NamingException, SAXException, IOException, JMSException {
 		this.cf = InitialContext.doLookup("jms/RemoteConnectionFactory");
 		this.d = InitialContext.doLookup("jms/queue/PlayQueue");
-		this.countryC = countryCAux;
 		while(true){
 			Message msg = null;
 			System.out.println("ReceiverQueue");
@@ -47,11 +46,20 @@ public class ReceiverQueue  extends Thread implements MessageListener{
 				tmsg =  jcontext.createMessage();
 				//mc.setMessageListener(this);
 				System.out.println("put listener");
+				
 				msg = mc.receive();
 				
-				
+					
+				 String aux = ((TextMessage)msg).getText();
+	             String[] split = aux.split("/");
+	             String searchType = split[0];
+	             String keyword = split[1];
+	             System.out.println("Request type: "+searchType+ "\n"+"Keyword: "+keyword);
+	             
+
+	 			System.out.println("total countries: " + ReceiverHandler.countryC.getCountry().size());
 				Message msgToSend=jcontext.createMessage();
-				msgToSend.setStringProperty("answer", "pai");
+				msgToSend.setStringProperty("answer",Requests.getInfo(searchType, keyword, ReceiverHandler.countryC));
 				msgToSend.setJMSCorrelationID(msg.getJMSCorrelationID());
 				msgToSend.setJMSReplyTo(msg.getJMSReplyTo());
 				
@@ -75,7 +83,6 @@ public class ReceiverQueue  extends Thread implements MessageListener{
 		JMSProducer mcs = jcontexts.createProducer();
 
 		System.out.println(msg.getJMSReplyTo());
-		messageToSend.setStringProperty("answer", "f");
 		mcs.send(msg.getJMSReplyTo(), messageToSend);
 		System.out.print("mandei");
 		

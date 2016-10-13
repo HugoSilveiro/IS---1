@@ -25,7 +25,7 @@ public class Main {
 		    			break;
 			case 3: //Get data from the selected sport"
 	    				String athlete = sc.nextLine();
-	    				getSportMedals();
+	    				getAthleteMedals();
 	    				break;
 			case 4: System.exit(0);
 					System.out.println("Exiting...");

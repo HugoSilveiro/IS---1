@@ -45,10 +45,10 @@ public class WebCrawlerJava {
 			
 			ObjectFactory objects= new ObjectFactory();
 			
-			Countrycolection colection=  objects.createCountrycolection();
+			Countrycolection colection;
 			
 			while(true){
-
+				colection=  objects.createCountrycolection();
 				System.out.println("Working");
 			try {
 
@@ -124,7 +124,7 @@ public class WebCrawlerJava {
 				timeOut=10000;
 			} catch (Exception e) {
 				timeOut=timeOut*2;
-				System.out.println("Can't connect to the website, waiting "+timeOut+" seconds");
+				System.out.println("Can't connect to the website, waiting "+timeOut/1000+" seconds");
 				//e.printStackTrace();
 			}
 			
@@ -141,7 +141,7 @@ public class WebCrawlerJava {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			System.out.println("Waiting "+timeOut+" seconds");
+			System.out.println("Waiting "+timeOut/1000+" seconds");
 			Thread.sleep(timeOut);
 			}
 	}

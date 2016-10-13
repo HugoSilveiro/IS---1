@@ -24,7 +24,7 @@ public class Receiver extends Thread implements MessageListener{
 	private ConnectionFactory cf;
 	private Destination d;
 	
-	public Receiver(Countrycolection countryC) throws NamingException, SAXException, IOException{
+	public Receiver() throws NamingException, SAXException, IOException{
 		this.cf = InitialContext.doLookup("jms/RemoteConnectionFactory");
 		this.d = InitialContext.doLookup("jms/topic/PC");
 		String msg = null;
@@ -33,7 +33,8 @@ public class Receiver extends Thread implements MessageListener{
 			msg = mc.receiveBody(String.class);
 			sendToFile(msg);
 			Validation validation = new Validation();
-			countryC = validation.Validation("example.xsd", "yolo_after.xml");
+			ReceiverHandler.countryC = validation.Validation("example.xsd", "yolo_after.xml");
+			System.out.println("total countries: " +  ReceiverHandler.countryC.getCountry().size());
 		} catch (JMSRuntimeException re) {
 			re.printStackTrace();
 		}

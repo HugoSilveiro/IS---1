@@ -10,8 +10,8 @@ import org.xml.sax.SAXException;
 import ConversionClasses.Countrycolection;
 
 public class ReceiverHandler {
-	private static Countrycolection countryC;
-	public static void main(String[] args) throws NamingException, SAXException, IOException, JMSException {
+	public static Countrycolection countryC=null;
+	public static void main(String[] args) throws NamingException, SAXException, IOException, JMSException, InterruptedException {
 		//Create 2 Threads
 		//Syncronized Object
 		/*
@@ -22,14 +22,21 @@ public class ReceiverHandler {
 			rQ.start();
 		}
 		*/
-		//Receiver r = new Receiver(countryC);
-		//r.start();
+		Receiver r = new Receiver();
+		r.start();
 		System.out.println("Waiting for requests...");
-		ReceiverQueue rQ = new ReceiverQueue(countryC);
+		
+		while(countryC==null){
+			Thread.sleep(1000);
+		}
+		System.out.println("Initiating receiver");
+		ReceiverQueue rQ = new ReceiverQueue();
 		rQ.start();
 		
 		//System.out.println("Message: " + msg);
-	
+		
+		
 
 	}
+	
 }
